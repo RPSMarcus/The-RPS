@@ -137,9 +137,9 @@
         await Sleep(1000);
 
         p.innerHTML = lastResult;
-        pStats.innerHTML = `Wins:${wins} | Losses:${losses} | Ties:${ties} | `;
+        pStats.innerHTML = `| Wins:${wins} | Losses:${losses} | Ties:${ties} | `;
 
-        pBotStats.innerHTML = `Best Of 3 Wins:${botFinalWins} | Best Of 3 Losses:${botFinalLosses} | `;
+        pBotStats.innerHTML = `| Best Of 3 Wins:${botFinalWins} | Best Of 3 Losses:${botFinalLosses} | `;
 
         if (result == -1) {
           p.setAttribute("lose", "");

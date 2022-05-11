@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+              p[win] {
+        color: green;
+      }
+
+      p[lose] {
+        color: red;
+      }
+
+      p[tie] {
+        color: blue;
+
+      }
+    </style>
+  </head>
+  <body>
+    <button onclick="Play(1)">Rock</button>
+    <button onclick="Play(2)">Paper</button>
+    <button onclick="Play(3)">Scissors</button>
+
+    <p id="result"></p>
+
+    <p id="stats"></p>
+
+    <p id="botStats"></p>
+
+    <button onclick="Reset()">Reset Stat Progress</button>
+    <script>
+      // Click a button
+      // Call computer to choose
+      // Say who won
+      // NOTES: Best Out Of 3
+
+      //Next
+      //Win/Lose counter
+      //add graphics
+      //save progress to browser
+      //reset progress button
+      // Make it a web site
+      // Make It THE rock paper scissorshttps://www.google.com/search?q=rock+holding+scissors&rlz=1CATMUU_enUS989US989&source=lnms&tbm=isch&sa=X&ved=2ahUKEwj34fnpzcb3AhW5I0QIHaDiCFkQ_AUoAXoECAEQAw&biw=1366&bih=649&dpr=1
+      // make a home page to choose between BOT or Infinite
+
+      var botWins = 0;
+      var botLosses = 0;
+      var botFinalWins = 0;
+      var botFinalLosses = 0;
+
+      var wins = 0;
+      var losses = 0;
+      var ties = 0;
+
+      var lastResult;
+
+      var pStats = document.querySelector("#stats");
+      var pBotStats = document.querySelector("#botStats");
+
+      function Sleep(ms) {
+        return new Promise((r) => setTimeout(r, ms));
+      }
+
+      async function Reset() {
+        wins = 0;
+        losses = 0;
+        ties = 0;
+
+        botWins = 0;
+        botLosses = 0;
+        botFinalWins = 0;
+        botFinalLosses = 0;
+
+        pStats.innerHTML = "Reseting...";
+        await Sleep(500);
+        pStats.innerHTML = "";
+      }
+
+      async function Play(guess) {
+        var result = CheckResult(guess);
+
+        if (result == -1) {
+          botLosses = botLosses + 1;
+        }
+        if (result == 1) {
+          botWins = botWins + 1;
+        }
+
+        if (botLosses >= 2) {
+          botFinalLosses = botFinalLosses + 1;
+          botWins = 0;
+          botLosses = 0;
+        }
+        if (botWins >= 2) {
+          botFinalWins = botFinalWins + 1;
+          botWins = 0;
+          botLosses = 0;
+        }
+
+        var p = document.querySelector("#result");
+
+        p.removeAttribute("win");
+        p.removeAttribute("lose");
+        p.removeAttribute("tie");
+
+        p.innerHTML = "Choosing...";
+
+        await Sleep(1000);
+
+        p.innerHTML = lastResult;
+        pStats.innerHTML = `Wins:${wins} | Losses:${losses} | Ties:${ties} | `;
+
+        pBotStats.innerHTML = `Best Of 3 Wins:${botFinalWins} | Best Of 3 Losses:${botFinalLosses} | `;
+
+        if (result == -1) {
+          p.setAttribute("lose", "");
+        }
+        if (result == 1) {
+          p.setAttribute("win", "");
+        }
+        if (result == 0) {
+          p.setAttribute("tie", "");
+        }
+      }
+
+      function CheckResult(guess) {
+        console.log("User guessed:" + guess);
+        var computerGuess = Math.floor(Math.random() * 3 + 1);
+        console.log("computer guessed:" + computerGuess);
+
+        // -1 loss / 0 tie / 1 win
+        if (guess == computerGuess) {
+          lastResult = "Tie";
+          ties = ties + 1;
+          return 0;
+        }
+        // 1 is rock / 2 is paper / 3 is Scisssors
+
+        if (guess == 1) {
+          if (computerGuess == 3) {
+            lastResult = "Rock beats scissors, you win.";
+            wins = wins + 1;
+            return 1;
+          }
+          if (computerGuess == 2) {
+            lastResult = "Papper beats Rock, you lose.";
+            losses = losses + 1;
+            return -1;
+          }
+        }
+        if (guess == 2) {
+          if (computerGuess == 1) {
+            lastResult = "Paper beats rock, you win.";
+            wins = wins + 1;
+            return 1;
+          }
+          if (computerGuess == 3) {
+            lastResult = "Scissors beats Paper, you lose.";
+            losses = losses + 1;
+            return -1;
+          }
+        }
+        if (guess == 3) {
+          if (computerGuess == 2) {
+            lastResult = "Scissors beats Paper, you win.";
+            wins = wins + 1;
+            return 1;
+          }
+          if (computerGuess == 1) {
+            lastResult = "Rock beats Scissors, you lose.";
+            losses = losses + 1;
+            return -1;
+          }
+        }
+      }
+      //console.log(CheckResult(1));
+      //document.querySelector("#result").innerHTML = "Hello";
+    </script>
+  </body>
+</html>
